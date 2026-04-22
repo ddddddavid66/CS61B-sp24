@@ -22,9 +22,11 @@ public class TestTiltNoMerge {
      * The following tests determine the correctness of your `tilt`
      * method.
      */
+    // 以下测试用于验证 `tilt` 方法在不发生合并时的正确性。
 
 
     /** Checks that a tilt that causes no change returns false. */
+    // 检查当一次倾斜不会带来任何变化时，是否正确返回 false。
     @Test
     @Tag("tilt-no-merge")
     @DisplayName("Test invalid tilt output")
@@ -46,6 +48,7 @@ public class TestTiltNoMerge {
     }
 
     /** Move tiles up (no merging). */
+    // 测试向上移动方块且不发生合并。
     @Test
     @Tag("tilt-no-merge")
     @DisplayName("Test Up tilt")
@@ -67,6 +70,7 @@ public class TestTiltNoMerge {
     }
 
     /** Move adjacent tiles up (no merging). */
+    // 测试向上移动相邻方块且不发生合并。
     @Test
     @Tag("tilt-no-merge")
     @DisplayName("Adjacent Up tilt")
@@ -88,6 +92,7 @@ public class TestTiltNoMerge {
     }
 
     /** Move non-adjacent tiles up (no merging). */
+    // 测试向上移动不相邻方块且不发生合并。
     @Test
     @Tag("tilt-no-merge")
     @DisplayName("Up tilt with gap")
@@ -109,6 +114,7 @@ public class TestTiltNoMerge {
     }
 
     /** Move non-adjacent tiles up (no merging); case 2: both tiles move. */
+    // 测试向上移动不相邻方块且不发生合并的另一种情况：两个方块都会移动。
     @Test
     @Tag("tilt-no-merge")
     @DisplayName("Up tilt with gaps")
@@ -129,6 +135,7 @@ public class TestTiltNoMerge {
         checkTilt(new Model(before, 0), new Model(after, 0), Side.NORTH);
     }
     /** Move tiles right (no merging). */
+    // 测试向右移动方块且不发生合并。
     @Test
     @Tag("tilt-no-merge")
     @DisplayName("Right tilt")
@@ -150,6 +157,7 @@ public class TestTiltNoMerge {
     }
 
     /** Move adjacent tiles right (no merging). */
+    // 测试向右移动相邻方块且不发生合并。
     @Test
     @Tag("tilt-no-merge")
     @DisplayName("Adjacent right tilt")
@@ -171,6 +179,7 @@ public class TestTiltNoMerge {
     }
 
     /** Move adjacent tiles right (no merging). */
+    // 测试向右移动相邻方块且不发生合并。
     @Test
     @Tag("tilt-no-merge")
     @DisplayName("Adjacent right tilt with gap")
@@ -192,6 +201,7 @@ public class TestTiltNoMerge {
     }
 
     /** Move adjacent tiles right (no merging); case 2: both tiles move. */
+    // 测试向右移动相邻方块且不发生合并的另一种情况：两个方块都会移动。
     @Test
     @Tag("tilt-no-merge")
     @DisplayName("Adjacent right tilt with gaps")
@@ -213,6 +223,7 @@ public class TestTiltNoMerge {
     }
 
     /** Move tiles down (no merging). */
+    // 测试向下移动方块且不发生合并。
     @Test
     @Tag("tilt-no-merge")
     @DisplayName("Down tilt")
@@ -234,6 +245,7 @@ public class TestTiltNoMerge {
     }
 
     /** Move adjacent tiles down (no merging). */
+    // 测试向下移动相邻方块且不发生合并。
     @Test
     @Tag("tilt-no-merge")
     @DisplayName("Adjacent down tilt")
@@ -255,6 +267,7 @@ public class TestTiltNoMerge {
     }
 
     /** Move non-adjacent tiles down (no merging). */
+    // 测试向下移动不相邻方块且不发生合并。
     @Test
     @Tag("tilt-no-merge")
     @DisplayName("Down tilt with gaps")
@@ -296,6 +309,7 @@ public class TestTiltNoMerge {
     }
 
     /** Move adjacent tiles left (no merging). */
+    // 测试向左移动相邻方块且不发生合并。
     @Test
     @Tag("tilt-no-merge")
     @DisplayName("Adjacent left tilt")
@@ -317,6 +331,7 @@ public class TestTiltNoMerge {
     }
 
     /** Move non-adjacent tiles left (no merging). */
+    // 测试向左移动不相邻方块且不发生合并。
     @Test
     @Tag("tilt-no-merge")
     @DisplayName("Left tilt with gaps")

@@ -19,8 +19,10 @@ public class TestModel {
      * The following tests determine the correctness of your `checkGameOver`
      * method.
      */
+    // 以下测试用于验证 `checkGameOver` 方法的正确性。
 
     /** No tilt can cause a change. */
+    // 测试任何方向的倾斜都不会引起变化。
     @Test
     @Tag("model")
     @DisplayName("No valid moves")
@@ -38,6 +40,7 @@ public class TestModel {
     }
 
     /** The MAX_PIECE (2048) tile is on the board. */
+    // 测试棋盘上已经存在 MAX_PIECE（2048）方块。
     @Test
     @Tag("model")
     @DisplayName("Max tile present")
@@ -55,6 +58,7 @@ public class TestModel {
     }
 
     /** No tilt can cause a change. */
+    // 测试任何方向的倾斜都不会引起变化。
     @Test
     @Tag("model")
     @DisplayName("No valid moves 2")
@@ -72,6 +76,7 @@ public class TestModel {
     }
 
     /** Any tilt will change the board. */
+    // 测试任意方向的倾斜都会改变棋盘。
     @Test
     @Tag("model")
     @DisplayName("Valid moves present")
@@ -89,6 +94,7 @@ public class TestModel {
     }
 
     /** A tilt right or down will change the board. */
+    // 测试向右或向下倾斜会改变棋盘。
     @Test
     @Tag("model")
     @DisplayName("Valid Right and Down moves")

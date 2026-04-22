@@ -23,10 +23,13 @@ public class TestMultipleMoves {
      * the correctness of the board after each move. You shouldn't expect these
      * tests to pass until all of the above tests pass.
      */
+    // 以下测试会多次调用 `tilt` 方法，并在每一步后检查棋盘状态是否正确。
+    // 在前面的测试全部通过之前，不应预期这些测试能够通过。
 
 
 
     /** Will test multiple moves on the Model. */
+    // 测试 Model 上的一系列连续移动。
     @Test
     @Tag("multiple-moves")
     @DisplayName("Multiple moves")
@@ -80,6 +83,7 @@ public class TestMultipleMoves {
     }
 
     /** Will test multiple moves on the Model that end the game. */
+    // 测试会导致游戏结束的一系列连续移动。
     @Test
     @Tag("multiple-moves")
     @DisplayName("Multiple moves and end behavior")
@@ -119,6 +123,7 @@ public class TestMultipleMoves {
     }
 
     /** Will test multiple moves on the Model. */
+    // 测试 Model 上的一系列连续移动。
     @Test
     @Tag("multiple-moves")
     @DisplayName("Multiple Moves 2")

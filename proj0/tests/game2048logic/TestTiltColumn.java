@@ -12,10 +12,12 @@ import static com.google.common.truth.Truth.assertWithMessage;
  *
  * @author Erik Kizior
  */
+// 测试 Model 的 tiltColumn() 方法。
 @Timeout(value = 60, threadMode = Timeout.ThreadMode.SEPARATE_THREAD)
 public class TestTiltColumn {
 
     /** No merging required. */
+    // 测试不需要合并的情况。
     @Test
     @Tag("tiltColumn")
     @DisplayName("No merge")
@@ -42,6 +44,7 @@ public class TestTiltColumn {
     }
 
     /** One merge required. Not dependent on score being implemented. */
+    // 测试需要一次合并的情况，并且不依赖分数实现。
     @Test
     @Tag("tiltColumn")
     @DisplayName("Merge, no score")
@@ -68,6 +71,7 @@ public class TestTiltColumn {
     }
 
     /** One merge required. Requires that score is implemented. */
+    // 测试需要一次合并的情况，并要求分数实现正确。
     @Test
     @Tag("tiltColumn")
     @DisplayName("Merge and score")

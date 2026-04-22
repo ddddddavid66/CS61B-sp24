@@ -10,6 +10,8 @@ public class TestUtils {
      * Checks that performing a tilt in the specified direction on the before
      * Model results in the after Model
      */
+    // 检查对 before Model 按指定方向执行一次倾斜后，
+    // 结果是否与 after Model 一致。
     public static void checkTilt(Model before, Model after, Side direction) {
         String prevBoard = before.toString();
         before.tiltWrapper(direction);

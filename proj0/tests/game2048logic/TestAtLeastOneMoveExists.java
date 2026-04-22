@@ -15,6 +15,8 @@ import static com.google.common.truth.Truth.assertWithMessage;
  *
  * @author Omar Khan
  */
+// 测试 Model 的 atLeastOneMoveExists() 方法。
+// 在通过 TestEmptySpace 中的所有测试之前，不应预期通过这些测试。
 @Timeout(value = 60, threadMode = Timeout.ThreadMode.SEPARATE_THREAD)
 public class TestAtLeastOneMoveExists {
 
@@ -23,6 +25,8 @@ public class TestAtLeastOneMoveExists {
      *  Note that this isn't a comprehensive test for empty space. For that,
      * see the TestEmptySpace class.
      */
+    // 测试一个存在部分空格的棋盘。
+    // 注意，这不是对空格情况的完整测试；更完整的测试见 TestEmptySpace。
     @Test
     @Tag("at-least-one-move-exists")
     @DisplayName("Empty Space Exists")
@@ -41,6 +45,7 @@ public class TestAtLeastOneMoveExists {
     }
 
     /** Tests a board where a tilt in any direction would cause a change. */
+    // 测试一个向任意方向倾斜都会发生变化的棋盘。
     @Test
     @Tag("at-least-one-move-exists")
     @DisplayName("Valid Tilt Exists")
@@ -59,6 +64,7 @@ public class TestAtLeastOneMoveExists {
     }
 
     /** Tests a board where a tilt left or right would cause a change. */
+    // 测试一个向左或向右倾斜会发生变化的棋盘。
     @Test
     @Tag("at-least-one-move-exists")
     @DisplayName("Valid Left/Right Tilt")
@@ -76,6 +82,7 @@ public class TestAtLeastOneMoveExists {
     }
 
     /** Tests a board where a tilt up or down would cause a change. */
+    // 测试一个向上或向下倾斜会发生变化的棋盘。
     @Test
     @Tag("at-least-one-move-exists")
     @DisplayName("Valid Up/Down Tilt")
@@ -97,6 +104,8 @@ public class TestAtLeastOneMoveExists {
      * While having the max tile on the board does mean the game is over, it
      * should not be handled in this method.
      */
+    // 测试一个仍然存在可移动操作的棋盘，即使棋盘上已经出现最大方块。
+    // 虽然最大方块出现在棋盘上意味着游戏结束，但这不应由此方法负责判断。
     @Test
     @Tag("at-least-one-move-exists")
     @DisplayName("Valid Tilt with Max Tile")
@@ -115,6 +124,7 @@ public class TestAtLeastOneMoveExists {
     }
 
     /** Tests a board where no move exists. */
+    // 测试一个不存在任何合法移动的棋盘。
     @Test
     @Tag("at-least-one-move-exists")
     @DisplayName("No Valid Move")
@@ -132,6 +142,7 @@ public class TestAtLeastOneMoveExists {
     }
 
     /** Tests a board where no move exists. */
+    // 测试一个不存在任何合法移动的棋盘。
     @Test
     @Tag("at-least-one-move-exists")
     @DisplayName("No Valid Move")
@@ -149,6 +160,7 @@ public class TestAtLeastOneMoveExists {
     }
 
     /** Tests a board where no move exists. */
+    // 测试一个不存在任何合法移动的棋盘。
     @Test
     @Tag("at-least-one-move-exists")
     @DisplayName("No Valid Move")
@@ -166,6 +178,7 @@ public class TestAtLeastOneMoveExists {
     }
 
     /** Tests a board where no move exists. */
+    // 测试一个不存在任何合法移动的棋盘。
     @Test
     @Tag("at-least-one-move-exists")
     @DisplayName("No Valid Move")
@@ -183,6 +196,7 @@ public class TestAtLeastOneMoveExists {
     }
 
     /** Tests a board where no move exists. */
+    // 测试一个不存在任何合法移动的棋盘。
     @Test
     @Tag("at-least-one-move-exists")
     @DisplayName("No Valid Move")

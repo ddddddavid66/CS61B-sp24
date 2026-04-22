@@ -12,10 +12,12 @@ import static com.google.common.truth.Truth.assertWithMessage;
  *
  * @author Erik Kizior
  */
+// 测试 Model 的 moveTileUpAsFarAsPossible() 方法。
 @Timeout(value = 60, threadMode = Timeout.ThreadMode.SEPARATE_THREAD)
 public class TestMoveTileUp {
 
     /** No merging required. */
+    // 测试不需要合并的情况。
     @Test
     @Tag("moveTileUpAsFarAsPossible")
     @DisplayName("Single tile in empty column")
@@ -42,6 +44,7 @@ public class TestMoveTileUp {
     }
 
     /** No merging required. Tile blocks movement. */
+    // 测试不需要合并且有方块阻挡移动的情况。
     @Test
     @Tag("moveTileUpAsFarAsPossible")
     @DisplayName("two tiles, different values")
@@ -68,6 +71,8 @@ public class TestMoveTileUp {
     }
 
     /** Merging required. Tiles of same value in same column. Does not depend on the score. */
+    // 测试需要合并的情况：同一列中有两个相同数值的方块。
+    // 该测试不依赖分数实现。
     @Test
     @Tag("moveTileUpAsFarAsPossible")
     @DisplayName("two tiles merge no score")
@@ -94,6 +99,8 @@ public class TestMoveTileUp {
     }
 
     /** Merging required. Tiles of same value in same column. Checks that score updates correctly. */
+    // 测试需要合并的情况：同一列中有两个相同数值的方块。
+    // 该测试同时检查分数是否正确更新。
     @Test
     @Tag("moveTileUpAsFarAsPossible")
     @DisplayName("two tiles merge with score update")

@@ -13,10 +13,12 @@ import static game2048logic.TestUtils.checkTilt;
  *
  * @author Omar Khan
  */
+// 仅测试向上（Side.NORTH）方向的 tilt() 方法。
 @Timeout(value = 60, threadMode = Timeout.ThreadMode.SEPARATE_THREAD)
 public class TestUpOnly {
 
     /** Move tiles up (no merging). */
+    // 测试向上移动方块且不发生合并。
     @Test
     @Tag("up")
     @DisplayName("Up Tilt")
@@ -38,6 +40,7 @@ public class TestUpOnly {
     }
 
     /** A basic merge. */
+    // 测试一次基础合并。
     @Test
     @Tag("up")
     @DisplayName("Up merge")
@@ -59,6 +62,7 @@ public class TestUpOnly {
     }
 
     /** A triple merge. Only the leading 2 tiles should merge. */
+    // 测试三连方块合并；只有最前面的两个方块应当合并。
     @Test
     @Tag("up")
     @DisplayName("Triple merge")
@@ -86,6 +90,9 @@ public class TestUpOnly {
      * this test, try seeing how you can ensure that the bottom 4 tile doesn't
      * merge with the newly created 4 tile on top.
      */
+    // 测试一个较难处理的合并场景。
+    // 难点在于底部那块 4 不应与顶部新生成的 4 再次合并。
+    // 如果该测试失败，需要检查如何保证底部的 4 不会与新生成的顶部 4 合并。
     @Test
     @Tag("up")
     @DisplayName("Limit Merging")
