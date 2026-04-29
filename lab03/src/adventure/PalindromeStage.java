@@ -34,9 +34,14 @@ public class PalindromeStage implements AdventureStage {
                 """);
         while (true) {
             String input = in.readLine();
-            while (!AdventureUtils.isInt(input)) {
-                System.out.println("Please enter a valid integer.");
+            while ( input != null && !AdventureUtils.isInt(input)) {
+                if (!input.trim().isEmpty()) {
+                    //System.out.println("Please enter a valid integer.");
+                }
                 input = this.in.readLine();
+            }
+            if(input == null){
+                return;
             }
 
             IntList numLst = digitsToIntList(input);
@@ -47,7 +52,7 @@ public class PalindromeStage implements AdventureStage {
                 break;
             }
 
-            System.out.println("That's not a palindrome! Try again.");
+            //System.out.println("That's not a palindrome! Try again.");
         }
     }
 
@@ -77,8 +82,8 @@ public class PalindromeStage implements AdventureStage {
      */
     private static IntList digitsToIntList(String s) {
         int[] a = new int[s.length()];
-        for (int i = s.length(); i > 0; i++) {
-            a[s.length() - i] = Character.getNumericValue(s.charAt(i));
+        for (int i = s.length(); i > 0; i--) {
+            a[s.length() - i] = Character.getNumericValue(s.charAt(s.length() - i));
         }
         return IntList.of(a);
     }

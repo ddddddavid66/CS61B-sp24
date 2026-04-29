@@ -34,13 +34,16 @@ public class AdventureGame {
             this.currentStage = null;
             return;
         }
-        AdventureStage poss;
+        AdventureStage poss = null;
         while (true) {
-            poss = this.parseResponse(in.readLine());
+            String s = in.readLine();
+            if(s == null){
+                break;
+            }
+            poss = this.parseResponse(s);
             if (poss != null) {
                 break;
             }
-
             System.out.println("Sorry, I don't understand that. Please type one of the responses in the brackets!");
         }
         this.currentStage = poss;
