@@ -1,6 +1,6 @@
 package hashmap;
 
-import java.util.Collection;
+import java.util.*;
 
 /**
  *  A hash table-backed Map implementation.
@@ -26,12 +26,26 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
 
     /* Instance Variables */
     private Collection<Node>[] buckets;
+    private int initialCapacity = 16;
+    private double loadFactor = 0.75;
+    private int size;
     // You should probably define some more!
 
     /** Constructors */
-    public MyHashMap() { }
+    public MyHashMap() {
+        this.buckets = (Collection<Node>[]) new Collection[initialCapacity];
+        for (int i = 0; i < initialCapacity; i++) {
+            buckets[i] = createBucket();
+        }
+    }
 
-    public MyHashMap(int initialCapacity) { }
+    public MyHashMap(int initialCapacity) {
+        this.initialCapacity = initialCapacity;
+        this.buckets = (Collection<Node>[]) new Collection[initialCapacity];
+        for (int i = 0; i < initialCapacity; i++) {
+            buckets[i] = createBucket();
+        }
+    }
 
     /**
      * MyHashMap constructor that creates a backing array of initialCapacity.
@@ -40,7 +54,14 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
      * @param initialCapacity initial size of backing array
      * @param loadFactor maximum load factor
      */
-    public MyHashMap(int initialCapacity, double loadFactor) { }
+    public MyHashMap(int initialCapacity, double loadFactor) {
+        this.initialCapacity = initialCapacity;
+        this.loadFactor = loadFactor;
+        this.buckets = (Collection<Node>[]) new Collection[initialCapacity];
+        for (int i = 0; i < initialCapacity; i++) {
+            buckets[i] = createBucket();
+        }
+    }
 
     /**
      * Returns a data structure to be a hash table bucket
@@ -63,11 +84,118 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
      * OWN BUCKET DATA STRUCTURES WITH THE NEW OPERATOR!
      */
     protected Collection<Node> createBucket() {
-        // TODO: Fill in this method.
+        //  Fill in this method.
+        return new LinkedList<>(); // 里面存储节点
+    }
+
+    //  Implement the methods of the Map61B Interface below
+    // Your code won't compile until you do so!
+
+    private int computeIndex(K key){
+        return  key.hashCode() & (this.initialCapacity - 1);
+    }
+
+    @Override
+    public void put(K key, V value) {
+        Collection<Node> collection =  this.buckets[computeIndex(key)];
+        Iterator<Node> iterator = collection.iterator();
+        boolean flag = false;
+        while(iterator.hasNext()){
+            Node node = iterator.next();
+            if(node.key.equals(key)){
+                flag = true;
+                node.value = value;
+                break;
+            }
+        }
+        if(!flag){ //添加
+            collection.add(new Node(key,value));
+            size++;
+        }
+        if((double)size / initialCapacity > loadFactor){ //需要扩容
+            resize(initialCapacity * 2);
+        }
+    }
+
+    private void resize(int cap){
+        int length = initialCapacity;
+        this.initialCapacity = cap;
+        Collection<Node>[] temp = (Collection<Node>[]) new Collection[initialCapacity];
+        for (int i = 0; i < cap; i++) {
+            temp[i] = createBucket();
+        }
+        for (int i = 0; i < length; i++) {
+            Iterator<Node> iterator = buckets[i].iterator();
+            while(iterator.hasNext()){
+                Node node = iterator.next();
+                temp[computeIndex(node.key)].add(node);
+            }
+        }
+        this.buckets = temp; //之前的会被当作垃圾回收
+    }
+
+    @Override
+    public V get(K key) {
+        Node node = getNode(key);
+        return node == null? null : node.value;
+    }
+    private Node getNode(K key){
+        Iterator<Node> iterator = this.buckets[computeIndex(key)].iterator();
+        while(iterator.hasNext()){
+            Node node = iterator.next();
+            if(node.key.equals(key)){
+                return node;
+            }
+        }
         return null;
     }
 
-    // TODO: Implement the methods of the Map61B Interface below
-    // Your code won't compile until you do so!
+    @Override
+    public boolean containsKey(K key) {
+        return getNode(key) != null;
+    }
 
+    @Override
+    public int size() {
+        return this.size;
+    }
+
+    @Override
+    public void clear() {
+        for (int i = 0; i < initialCapacity; i++) {
+            buckets[i] = createBucket();
+        }
+        size = 0;
+    }
+
+    @Override
+    public Set<K> keySet() {
+        Set<K> set = new LinkedHashSet<>();
+        for (Collection<Node> bucket : buckets) {
+            for (Node node : bucket) {
+                set.add(node.key);
+            }
+        }
+        return set;
+    }
+
+    @Override
+    public V remove(K key) {
+        Collection<Node> collection =  this.buckets[computeIndex(key)];
+        Iterator<Node> iterator = collection.iterator();
+        while (iterator.hasNext()){
+            Node node = iterator.next();
+            if(node.key.equals(key)){
+                collection.remove(node);
+                size--;
+                return node.value;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public Iterator<K> iterator() {
+        return keySet().iterator();
+    }
 }
