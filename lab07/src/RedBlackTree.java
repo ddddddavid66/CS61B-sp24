@@ -50,7 +50,9 @@ public class RedBlackTree<T extends Comparable<T>> {
      * @param node
      */
     void flipColors(RBTreeNode<T> node) {
-        // TODO: YOUR CODE HERE
+        node.isBlack = !node.isBlack;
+        node.left.isBlack = !node.left.isBlack;
+        node.right.isBlack = !node.right.isBlack;
     }
 
     /**
@@ -61,8 +63,13 @@ public class RedBlackTree<T extends Comparable<T>> {
      * @return
      */
     RBTreeNode<T> rotateRight(RBTreeNode<T> node) {
-        // TODO: YOUR CODE HERE
-        return null;
+        RBTreeNode<T> temp = node.left;
+        node.left = temp.right;
+        temp.right = node;
+        // 交换颜色
+        temp.isBlack = node.isBlack;
+        node.isBlack = false;
+        return temp;
     }
 
     /**
@@ -73,8 +80,13 @@ public class RedBlackTree<T extends Comparable<T>> {
      * @return
      */
     RBTreeNode<T> rotateLeft(RBTreeNode<T> node) {
-        // TODO: YOUR CODE HERE
-        return null;
+        RBTreeNode<T> temp = node.right;
+        node.right = temp.left;
+        temp.left = node;
+        // 颜色要交换
+        temp.isBlack = node.isBlack;
+        node.isBlack = false;
+        return temp;
     }
 
     /**
@@ -104,18 +116,33 @@ public class RedBlackTree<T extends Comparable<T>> {
      * @param item
      * @return
      */
+    //边插入 边修复
     private RBTreeNode<T> insert(RBTreeNode<T> node, T item) {
-        // TODO: Insert (return) new red leaf node.
-
-        // TODO: Handle normal binary search tree insertion.
-
-        // TODO: Rotate left operation
-
-        // TODO: Rotate right operation
-
-        // TODO: Color flip
-
-        return null; //fix this return statement
+        //  Insert (return) new red leaf node.
+        if(node == null){
+            return new RBTreeNode<>(false,item);
+        }
+        //  Handle normal binary search tree insertion.
+        int cmp = node.item.compareTo(item);
+        if(cmp > 0){ // 节点更大
+            node.left = insert(node.left,item);
+        }else if(cmp < 0){
+            node.right = insert(node.right,item);
+        } // 重复不用考虑
+        //  Rotate left operation 左旋 红节点不是左节点的时候 同时 右节点是黑色
+        if(isRed(node.right) && !isRed(node.left)){
+            node = rotateLeft(node);
+        }
+        // Rotate right operation 右旋 两个相同的红色节点
+        if(isRed(node.left) && isRed(node.left.left)){
+            node = rotateRight(node);
+        }
+        // Color flip 子节点都是红色的时候 反转
+        if(isRed(node.left) && isRed(node.right)){
+            flipColors(node);
+        }
+        return node;
     }
+
 
 }

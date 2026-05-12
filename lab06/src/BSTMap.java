@@ -1,7 +1,9 @@
-import javax.crypto.KEM;
-import java.util.*;
 
-public class BSTMap<K extends Comparable<K>,V> implements Map61B<K,V> {
+import java.util.Iterator;
+import java.util.LinkedHashSet;
+import java.util.Set;
+
+public class BSTMap<K extends Comparable<K>,V> implements Map61B<K,V>{
     class Node{
         private K key;
         private V value;
@@ -11,32 +13,31 @@ public class BSTMap<K extends Comparable<K>,V> implements Map61B<K,V> {
         public Node(K key,V value,Node leftChild,Node rightChild,Node parent){
             this.key = key;
             this.value = value;
-            this.rightChild = rightChild;
             this.leftChild = leftChild;
+            this.rightChild = rightChild;
             this.parent = parent;
         }
     }
+
     private Node root;
     private int size;
 
-
-
     @Override
-    public void put(K key, V value) { //key value 关联
+    public void put(K key, V value) {
         root = put(root,key,value,null);
     }
 
     private Node put(Node node,K key,V value,Node parent){
-        if (node == null){ // 找到了自己的位置
+        if (node == null){ //该插入了
             size++;
             return new Node(key,value,null,null,parent);
         }
-        int cmp = key.compareTo(node.key);
-        if(cmp > 0) {
-            node.rightChild = put(node.rightChild,key,value,node);
+        int cmp = node.key.compareTo(key);
+        if (cmp > 0){ //node key 大
+            node.leftChild = put(node.leftChild,key,value,node);
         }else if (cmp < 0){
-            node.leftChild  = put(node.leftChild,key,value,node);
-        }else{ //cmp =0 更新value
+            node.rightChild = put(node.rightChild,key,value,node);
+        }else{
             node.value = value;
         }
         return node;
@@ -44,54 +45,28 @@ public class BSTMap<K extends Comparable<K>,V> implements Map61B<K,V> {
 
     @Override
     public V get(K key) {
-        return get(root,key);
-    }
-
-    private V get(Node node,K key){
-        if (node == null){
-            return null;
-        }
-        int cmp = key.compareTo(node.key);
-        if (cmp > 0){
-            return get(node.rightChild,key);
-        }else if(cmp < 0){
-            return get(node.leftChild,key);
-        }else{
-            return node.value;
-        }
+        Node node = getNode(root, key);
+        return node == null ? null : node.value;
     }
 
     private Node getNode(Node node,K key){
-        if (node == null){
+        if(node == null){
             return null;
         }
-        int cmp = key.compareTo(node.key);
-        if (cmp > 0){
-            return getNode(node.rightChild,key);
-        }else if(cmp < 0){
-            return getNode(node.leftChild,key);
+        int cmp = node.key.compareTo(key);
+        if (cmp > 0){ // node 大
+            node = getNode(node.leftChild,key);
+        }else if (cmp < 0){
+            node = getNode(node.rightChild,key);
         }else{
             return node;
         }
+        return node;
     }
 
     @Override
-    public boolean containsKey(K key) {//直接写get是错的 因为get返回的是值 而判断是否存在关键在于键
-        return containsKey(root,key);
-    }
-
-    private boolean containsKey(Node node ,K key){
-        if (node == null){
-            return false;
-        }
-        int cmp = key.compareTo(node.key);
-        if (cmp > 0){
-            return containsKey(node.rightChild,key);
-        }else if(cmp < 0){
-            return containsKey(node.leftChild,key);
-        }else{
-            return true;
-        }
+    public boolean containsKey(K key) {
+        return getNode(root,key) != null;
     }
 
     @Override
@@ -101,132 +76,84 @@ public class BSTMap<K extends Comparable<K>,V> implements Map61B<K,V> {
 
     @Override
     public void clear() {
-        /*clear(root);
-        root = null;*/
-        //实际上java有垃圾回收
-        root = null;
-        size = 0;
-    }
-
-    private void clear(Node node){
-        if (node == null){
-            return;
-        }
-        if (node.leftChild != null){
-            clear(node.leftChild);
-        }
-        if(node.rightChild != null){
-            clear(node.rightChild);
-        }
-        size--;
-        node.leftChild = null;
-        node.rightChild = null;
+        root = null;  //交给jvm回收垃圾
+        this.size = 0;
     }
 
     @Override
-    public Set<K> keySet() { // 这个是插入顺序  必须在插入的时候 实现
+    public Set<K> keySet() {
         Set<K> set = new LinkedHashSet<>();
-        inOrder(root,set);
+        addKeys(root,set);
         return set;
     }
 
-    private void inOrder(Node node,Set<K> set){
+    private void addKeys(Node node,Set<K> set){
         if (node == null){
             return;
         }
-        inOrder(node.leftChild,set);
+        addKeys(node.leftChild,set);
         set.add(node.key);
-        inOrder(node.rightChild,set);
+        addKeys(node.rightChild,set);
     }
-
 
     @Override
-    public V remove(K key) { // 删除key
-        // 找到predecessor 根节点的左子节点的最大节点 并且必须没有孩子 或者只能有一个 左子节点
-        // 或者 successor 根节点的右子节点的最小值 必须没有子节点 或者只有一个 右子节点
-        Node target = getNode(root,key);
-        if (target == null){
+    public V remove(K key) {
+        Node target = getNode(root, key);
+        if (target == null) {
             return null;
         }
-        V value = target.value;
-        root = remove(root,key,null);
-        if (root != null) {
-            root.parent = null;
-        }
+        root = remove(root, key);
+        V oldValue = target.value;
         size--;
-        return value;
+       return oldValue;
     }
-    private Node remove(Node node,K key,Node parent){
-        if (node == null){
+
+    private Node remove(Node node,K key){
+        // 找predecessor 前者 左子树中最大的 也就是右子节点到尽头
+        // 找 successor  右子树中最小的  也就是 左子节点到尽头
+        if(node == null){
             return null;
         }
         int cmp = node.key.compareTo(key);
-        if(cmp > 0){ //node 大
-            node.leftChild = remove(node.leftChild,key,node);
+        if (cmp > 0){
+            node.leftChild = remove(node.leftChild,key);
         }else if (cmp < 0){
-            node.rightChild = remove(node.rightChild,key,node);
-        }else{ //cmp = 0
-            //如果 只有 一个做左子节点
-            if(node.rightChild == null){
-                Node left = node.leftChild;
-                if (left != null){
-                    left.parent = parent;
-                }
-                return left;
+            node.rightChild = remove(node.rightChild,key);
+        }else{
+            if(node.leftChild == null){ // 自动处理了没有孩子的事情
+                return node.rightChild;
             }
-            if (node.leftChild == null){
-                Node right = node.rightChild;
-                if (right != null){
-                    right.parent = parent; //顶替node的位置
-                }
-                return right;
+            if (node.rightChild == null){
+                return node.leftChild;
             }
-            //如果两个孩子 那么就找一个 predecessor 左子节点的最大节点
-            Node predecessor = findPredecessor(node);
-            node.key = predecessor.key;
-            node.value = predecessor.value;
-            node.leftChild = removeMax(node.leftChild,node);
+            // 两个孩子
+            Node temp = node;
+            Node successor = getMin(temp.rightChild);
+            // successor 需要接上 左右节点
+            successor.rightChild = removeMin(temp.rightChild);
+            successor.leftChild = temp.leftChild;
+            node = successor;
         }
-        node.parent = parent;
         return node;
     }
 
-    private Node findPredecessor(Node node){
-        node = node.leftChild;
-        while(node.rightChild != null){
-            node = node.rightChild;
+    private Node getMin(Node node){
+        while(node.leftChild != null){
+            node = node.leftChild;
         }
-        return node;
-    }
-    private Node removeMax(Node node,Node parent){
-        if (node.rightChild == null){
-            Node left = node.leftChild;
-            if(left != null){
-                left.parent = parent;
-            }
-            return left;
-        }
-        node.rightChild = removeMax(node.rightChild, node);
-        node.parent = parent;
         return node;
     }
 
+    private Node removeMin(Node node){ //需要删除 最小节点 也就是删除最左边的节点
+        if(node.leftChild == null){
+            return node.rightChild;
+        }
+        node.leftChild = removeMin(node.leftChild);
+        return node;
+    }
 
     @Override
-    public Iterator<K> iterator() { //中序迭代
-        List<K> keys = new ArrayList<>();
-        iterator(root,keys);
-        return keys.iterator();
+    public Iterator<K> iterator() {
+        return keySet().iterator();
     }
-
-    private void iterator(Node node,List<K> keys){
-        if (node == null){
-            return;
-        }
-        iterator(node.leftChild,keys);
-        keys.add(node.key);
-        iterator(node.rightChild,keys);
-    }
-
-
 }
