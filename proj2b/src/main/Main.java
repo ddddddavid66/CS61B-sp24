@@ -12,11 +12,12 @@ public class Main {
 
         String synsetFile = "./data/wordnet/synsets.txt";
         String hyponymFile = "./data/wordnet/hyponyms.txt";
+        WorldNet worldNet = new WorldNet(synsetFile,hyponymFile);
 
         hns.startUp();
         hns.register("history", new DummyHistoryHandler());
         hns.register("historytext", new DummyHistoryTextHandler());
-        hns.register("hyponyms", new HyponymsHandler());
+        hns.register("hyponyms", new HyponymsHandler(worldNet));
 
         System.out.println("Finished server startup! Visit http://localhost:4567/ngordnet.html");
     }
